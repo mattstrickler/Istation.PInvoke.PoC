@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <LangVersion>default</LangVersion>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="libLoginToken.so" />
+      <None Remove="libLoginTokenNativeLibrary.so" />
+      <None Remove="LoginToken.dll" />
+      <None Remove="LoginTokenNativeLibrary.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="libLoginTokenNativeLibrary.so" />
+      <EmbeddedResource Include="LoginTokenNativeLibrary.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+      <PackageReference Include="NativeLibraryManager" Version="1.0.23" />
+      <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+      <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    </ItemGroup>
+    
+</Project>
