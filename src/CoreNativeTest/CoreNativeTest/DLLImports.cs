@@ -28,4 +28,12 @@ namespace CoreNativeTest
         [DllImport(DLL_LIBRARY, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr GetToken(IntPtr token);
     }
+
+    public static class DLLImportsLoginTokenWrap
+    {
+        const string DLL_LIBRARY = "ISTokenWrapper";
+
+        [DllImport(DLL_LIBRARY)]
+        public static extern IntPtr CreateLoginToken(long userOid, long tokenOid, long issueDateSeconds);
+    }
 }

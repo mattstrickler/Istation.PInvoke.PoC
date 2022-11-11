@@ -10,6 +10,12 @@ namespace CoreNativeTest
 
         private static void Main(string[] args)
         {
+            LoadLoginToken();
+            LoadLoginTokenWrap();
+        }
+    
+        private static void LoadLoginToken()
+        {
             var accessor = new ResourceAccessor(Assembly.GetExecutingAssembly());
             var libManager = new LibraryManager(
                 new LibraryItem(Platform.Windows, Bitness.x64,
@@ -56,7 +62,52 @@ namespace CoreNativeTest
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("Press Any Key to Exit...");
-            Console.ReadLine();
+            //Console.ReadLine();
+        }
+    
+        private static void LoadLoginTokenWrap()
+        {
+            var accessor = new ResourceAccessor(Assembly.GetExecutingAssembly());
+            var libManager = new LibraryManager(
+                new LibraryItem(Platform.Linux, Bitness.x64,
+                    new LibraryFile("libISTokenWrapper.so", accessor.Binary("libISTokenWrapper.so")))
+            );
+
+            libManager.LoadNativeLibrary();
+
+            var platform = "NOT DEFINED";
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                platform = "Windows";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                platform = "Linux";
+            }
+
+            var OSArchitecture = RuntimeInformation.OSArchitecture;
+            var OSDescription = RuntimeInformation.OSDescription;
+            var FrameworkDescription = RuntimeInformation.FrameworkDescription;
+
+            Console.WriteLine();
+            Console.WriteLine("---------------------------------------------------------------------");
+            Console.WriteLine("-------------------------- P-Invoke Demo ----------------------------");
+            Console.WriteLine("---------------------------------------------------------------------");
+            Console.WriteLine();
+
+            string msg = $"Platform: {platform}{Environment.NewLine}{nameof(OSArchitecture)}: {OSArchitecture}{Environment.NewLine}{nameof(OSDescription)}: {OSDescription}{Environment.NewLine}{nameof(FrameworkDescription)}: {FrameworkDescription}";
+            Console.WriteLine(msg);
+            Console.WriteLine();
+
+            var LoginToken2 = new LoginTokenWrap(10000, 12515, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds());
+            Console.WriteLine();
+            Console.WriteLine("Successfully created LoginToken passing UserOid, TokenOid, and IssuedAtSeconds to C++ and importing properties.");
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Press Any Key to Exit...");
+            //Console.ReadLine();
         }
     }
 }

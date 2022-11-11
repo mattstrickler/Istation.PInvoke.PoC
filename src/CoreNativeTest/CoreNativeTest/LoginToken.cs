@@ -29,6 +29,12 @@ namespace CoreNativeTest
             Token = Marshal.PtrToStringAnsi(intPtr);
         }
 
+        ~LoginToken()
+        {
+            DeletePointerLoginToken();
+        }
+
+        #region Properties
         private long _UserOid;
         public long UserOid
         {
@@ -80,11 +86,7 @@ namespace CoreNativeTest
                 _Token = value;
             }
         }
-
-        ~LoginToken()
-        {
-            DeletePointerLoginToken();
-        }
+        #endregion Properties
 
         private bool _pointerDeleted = false;
         private void DeletePointerLoginToken()
@@ -94,6 +96,22 @@ namespace CoreNativeTest
                 DLLImports.DeleteLoginToken(_loginTokenPointer);
                 _pointerDeleted = true;
             }
+        }
+    }
+
+    public class LoginTokenWrap
+    {
+        private readonly IntPtr _loginTokenPointer;
+
+        public LoginTokenWrap(long userOid, long tokenOid, long issuedDateSeconds)
+        {
+            _loginTokenPointer = DLLImportsLoginTokenWrap.CreateLoginToken(userOid, tokenOid, issuedDateSeconds);
+            //UserOid = DLLImports.GetUserOid(_loginTokenPointer);
+            //TokenOid = DLLImports.GetTokenOid(_loginTokenPointer);
+            //IssuedDateSeconds = DLLImports.GetIssuedDateSeconds(_loginTokenPointer);
+
+            //IntPtr intPtr = DLLImports.GetToken(_loginTokenPointer);
+            //Token = Marshal.PtrToStringAnsi(intPtr);
         }
     }
 }
