@@ -10,7 +10,7 @@ namespace CoreNativeTest
 
         private static void Main(string[] args)
         {
-            LoadLoginToken();
+            //LoadLoginToken();
             LoadLoginTokenWrap();
         }
     

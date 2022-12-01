@@ -35,5 +35,25 @@ namespace CoreNativeTest
 
         [DllImport(DLL_LIBRARY)]
         public static extern IntPtr CreateLoginToken(long userOid, long tokenOid, long issueDateSeconds);
+
+        [DllImport(DLL_LIBRARY, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        public static extern IntPtr CreateLoginTokenFromString([MarshalAs(UnmanagedType.LPStr)] string token);
+
+
+        [DllImport(DLL_LIBRARY)]
+        public static extern void DeleteLoginToken(IntPtr logintoken_ptr);
+
+        [DllImport(DLL_LIBRARY)]
+        public static extern long GetUserOid(IntPtr logintoken_ptr);
+
+        [DllImport(DLL_LIBRARY)]
+        public static extern long GetTokenOid(IntPtr logintoken_ptr);
+
+        [DllImport(DLL_LIBRARY)]
+        public static extern long GetIssuedAtSeconds(IntPtr logintoken_ptr);
+
+
+        [DllImport(DLL_LIBRARY, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        public static extern IntPtr GetToken(IntPtr logintoken_ptr);
     }
 }
