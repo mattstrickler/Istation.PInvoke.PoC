@@ -70,9 +70,11 @@ namespace CoreNativeTest
             var accessor = new ResourceAccessor(Assembly.GetExecutingAssembly());
             var libManager = new LibraryManager(
                 new LibraryItem(Platform.Windows, Bitness.x64,
-                    new LibraryFile("LoginTokenNativeLibrary.dll", accessor.Binary("LoginTokenNativeLibrary.dll"))),
+                    new LibraryFile("LoginTokenNativeLibrary.dll", 
+                                    accessor.Binary("LoginTokenNativeLibrary.dll"))),
                 new LibraryItem(Platform.Linux, Bitness.x64,
-                    new LibraryFile("libLoginTokenNativeLibrary.so", accessor.Binary("libLoginTokenNativeLibrary.so")))
+                    new LibraryFile("libLoginTokenNativeLibrary.so", 
+                                    accessor.Binary("libLoginTokenNativeLibrary.so")))
             );
 
             libManager.LoadNativeLibrary();
