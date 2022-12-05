@@ -102,25 +102,36 @@ namespace CoreNativeTest
     public class LoginTokenWrap
     {
         private readonly IntPtr _loginTokenPointer;
-        private readonly IntPtr _loginTokenPointer2;
 
-        public LoginTokenWrap(long userOid, long tokenOid, long issuedDateSeconds)
+        public LoginTokenWrap(long userOid, long tokenOid, DateTime issuedDate)
         {
-            _loginTokenPointer = DLLImportsLoginTokenWrap.CreateLoginToken(userOid, tokenOid, issuedDateSeconds);
+            _IssuedDate = issuedDate;
+            _loginTokenPointer = DLLImportsLoginTokenWrap.CreateLoginToken(userOid, tokenOid, new DateTimeOffset(_IssuedDate).ToUnixTimeSeconds());
             UserOid = DLLImportsLoginTokenWrap.GetUserOid(_loginTokenPointer);
             TokenOid = DLLImportsLoginTokenWrap.GetTokenOid(_loginTokenPointer);
             IssuedDateSeconds = DLLImportsLoginTokenWrap.GetIssuedAtSeconds(_loginTokenPointer);
+            DateTime dateTimeUTC = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            DateTime dateTimeLocal = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTimeUTC = dateTimeUTC.AddSeconds(IssuedDateSeconds);
+            dateTimeLocal = dateTimeLocal.AddSeconds(IssuedDateSeconds).ToLocalTime();
 
             IntPtr intPtr = DLLImportsLoginTokenWrap.GetToken(_loginTokenPointer);
             Token = Marshal.PtrToStringAnsi(intPtr);
 
-            _loginTokenPointer2 = DLLImportsLoginTokenWrap.CreateLoginTokenFromString(Token);
-            UserOid = DLLImportsLoginTokenWrap.GetUserOid(_loginTokenPointer2);
-            TokenOid = DLLImportsLoginTokenWrap.GetTokenOid(_loginTokenPointer2);
-            IssuedDateSeconds = DLLImportsLoginTokenWrap.GetIssuedAtSeconds(_loginTokenPointer2);
+            //DLLImportsLoginTokenWrap.DeleteLoginToken(_loginTokenPointer);
+        }
 
-            IntPtr intPtr2 = DLLImportsLoginTokenWrap.GetToken(_loginTokenPointer2);
+        public LoginTokenWrap(string Token)
+        {
+            _loginTokenPointer = DLLImportsLoginTokenWrap.CreateLoginTokenFromString(Token);
+            UserOid = DLLImportsLoginTokenWrap.GetUserOid(_loginTokenPointer);
+            TokenOid = DLLImportsLoginTokenWrap.GetTokenOid(_loginTokenPointer);
+            IssuedDateSeconds = DLLImportsLoginTokenWrap.GetIssuedAtSeconds(_loginTokenPointer);
+
+            IntPtr intPtr2 = DLLImportsLoginTokenWrap.GetToken(_loginTokenPointer);
             Token = Marshal.PtrToStringAnsi(intPtr2);
+
+            //DLLImportsLoginTokenWrap.DeleteLoginToken(_loginTokenPointer);
         }
 
         ~LoginTokenWrap()
@@ -152,6 +163,19 @@ namespace CoreNativeTest
             set
             {
                 _TokenOid = value;
+            }
+        }
+
+        private DateTime _IssuedDate;
+        public DateTime IssuedDate
+        {
+            get
+            {
+                return _IssuedDate;
+            }
+            set
+            {
+                _IssuedDate = value;
             }
         }
 

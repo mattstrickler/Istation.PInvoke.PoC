@@ -100,9 +100,13 @@ namespace CoreNativeTest
             Console.WriteLine(msg);
             Console.WriteLine();
 
-            var LoginToken2 = new LoginTokenWrap(10000, 12515, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds());
+            var LoginToken2 = new LoginTokenWrap(10000, 12515, DateTime.Now);
             Console.WriteLine();
             Console.WriteLine("Successfully created LoginToken passing UserOid, TokenOid, and IssuedAtSeconds to C++ and importing properties.");
+
+            var LoginTokenfromString = new LoginTokenWrap(LoginToken2.Token);
+            Console.WriteLine();
+            Console.WriteLine("Successfully created LoginToken passing Token String.");
 
             Console.WriteLine();
             Console.WriteLine();
