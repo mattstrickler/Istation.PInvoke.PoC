@@ -121,9 +121,9 @@ namespace CoreNativeTest
             //DLLImportsLoginTokenWrap.DeleteLoginToken(_loginTokenPointer);
         }
 
-        public LoginTokenWrap(string Token)
+        public LoginTokenWrap(string token)
         {
-            _loginTokenPointer = DLLImportsLoginTokenWrap.CreateLoginTokenFromString(Token);
+            _loginTokenPointer = DLLImportsLoginTokenWrap.CreateLoginTokenFromString(token);
             UserOid = DLLImportsLoginTokenWrap.GetUserOid(_loginTokenPointer);
             TokenOid = DLLImportsLoginTokenWrap.GetTokenOid(_loginTokenPointer);
             IssuedDateSeconds = DLLImportsLoginTokenWrap.GetIssuedAtSeconds(_loginTokenPointer);
